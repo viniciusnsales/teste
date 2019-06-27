@@ -1,5 +1,6 @@
 const pokemonClient = require("../clients/pokemon.client");
 const weatherClient = require("../clients/wather.client");
+const WeatherPokemon = require("../models/weatherPokemons.model");
 
 // class
 const pokemonService = () => {
@@ -8,12 +9,14 @@ const pokemonService = () => {
     const weather = await weatherClient.byCity(city);
     const pokemonType = typeByWeather(weather.temperature, weather.isRaining());
     const allPokemons = await pokemonClient.byType(pokemonType);
-    const pokemons =  await selectPokemons(allPokemons, pokemonType);
+    const pokemons = await selectPokemons(allPokemons, pokemonType);
 
-    return {
-      weather,
+    return new WeatherPokemon({
+      climate: weather.condition,
+      isRaining: weather.isRaining(),
       pokemons,
-    };
+      temperature: weather.temperature,
+    });
 
   };
 
@@ -48,7 +51,6 @@ const pokemonService = () => {
     const selectedPokemons = [];
 
     for (let i = 0; i < 4; i++) {
-
       const index = Math.floor(Math.random() * (pokemons.length / 2 - 1));
       const pokemon = await pokemonClient.findPokemonByName(pokemons[index].name);
       pokemon.type = type;
