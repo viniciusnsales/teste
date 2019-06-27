@@ -9,12 +9,7 @@ const pokemonController = () => {
     const city = req.query.name;
     const result = await pokemonService.byCity(city);
     
-    res.send({
-      isRaining: result.weather.isRaining(),
-      climate: result.weather.climate,
-      temp: result.weather.temperature,
-      pokemons: result.pokemons,
-    });
+    res.send(result);
   });
 
   return router;
@@ -22,6 +17,3 @@ const pokemonController = () => {
 };
 
 module.exports = pokemonController();
-
-
-//const city = req.query.name

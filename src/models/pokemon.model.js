@@ -3,11 +3,11 @@ module.exports = class Pokemon {
   constructor({
     name,
     type,
-    url,
+    sprite,
   } = {}) {
     this.name = name;
     this.type = type;
-    this.url = url;
+    this.sprite = sprite;
   }
 
 };

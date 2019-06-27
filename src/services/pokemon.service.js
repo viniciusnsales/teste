@@ -7,17 +7,8 @@ const pokemonService = () => {
   const byCity = async (city) => {
     const weather = await weatherClient.byCity(city);
     const pokemonType = typeByWeather(weather.temperature, weather.isRaining());
-    const pokemons = await pokemonClient.byType(pokemonType);
-
-    const nums = [];
-
-    for (let i = 0; i < 4; i++) {
-
-      const index = Math.floor(Math.random() * (pokemons.length / 2 - 1));
-
-      
-
-    }
+    const allPokemons = await pokemonClient.byType(pokemonType);
+    const pokemons =  await selectPokemons(allPokemons, pokemonType);
 
     return {
       weather,
@@ -50,6 +41,21 @@ const pokemonService = () => {
       }
     }
 
+  };
+
+  const selectPokemons = async (pokemons, type) => {
+
+    const selectedPokemons = [];
+
+    for (let i = 0; i < 4; i++) {
+
+      const index = Math.floor(Math.random() * (pokemons.length / 2 - 1));
+      const pokemon = await pokemonClient.findPokemonByName(pokemons[index].name);
+      pokemon.type = type;
+      selectedPokemons.push(pokemon);
+    }
+
+    return selectedPokemons;
   };
 
 
