@@ -1,3 +1,5 @@
+const Weather = require("../models/weather.model");
+
 const superagent = require("superagent");
 
 const BASE_API_OPENWEATHER = "https://api.openweathermap.org/data/2.5/weather";
@@ -16,7 +18,11 @@ const weatherClient = () => {
 
     const body = weatherResponse.body;
 
-    return body;
+    return new Weather({
+      temperature: body.main.temp,
+      condition: body.weather[0].description,
+      conditionId: body.weather[0].main,
+    });
 
   };
 

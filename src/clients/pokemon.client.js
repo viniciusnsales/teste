@@ -1,3 +1,5 @@
+const Pokemon = require("../models/pokemon.model");
+
 const superagent = require("superagent");
 
 const BASE_API_POKEMON = "https://pokeapi.co/api/v2/";
@@ -10,7 +12,13 @@ const pokemonClient = () => {
 
     const body = pokemonResponse.body;
 
-    return body;
+    return body.pokemon.map((item) => {
+      return new Pokemon({
+        name: item.pokemon.name,
+        url: item.pokemon.url,
+        type,
+      });
+    });
 
   };
 
