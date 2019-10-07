@@ -8,7 +8,7 @@ const pokemonController = () => {
 
     const city = req.query.name;
     const result = await pokemonService.byCity(city);
-    
+
     res.send(result);
   });
 
